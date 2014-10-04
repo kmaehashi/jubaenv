@@ -1,0 +1,18 @@
+#!/bin/sh -ue
+
+cat << '_EOF_'
+jubaenv - Jubatus Environment Switcher
+
+List all versions of Jubatus available:
+
+  $ jubaenv install -l
+
+Install Jubatus:
+
+  $ jubaenv install 0.6.3
+
+Enable specific version of Jubatus for the current shell:
+
+  $ jubaenv shell 0.6.3
+
+_EOF_

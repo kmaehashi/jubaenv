@@ -1,0 +1,26 @@
+#!/bin/sh
+
+cat << _EOF_
+export JUBAENV_ROOT="$(cd "$(dirname "${0}")"; pwd)"
+export JUBAENV_VERSION="system"
+_EOF_
+
+cat << '_EOF_'
+function jubaenv() {
+  local SUBCMD
+  if [ $# -eq 0 ]; then
+    echo "${JUBAENV_VERSION}"
+    return
+  fi
+  SUBCMD="${1}"; shift
+  SUBCMD_EXEC="${JUBAENV_ROOT}/libexec/jubaenv-${SUBCMD}"
+  if [ -x "${SUBCMD_EXEC}" ]; then
+    case "${SUBCMD}" in
+      shell ) eval    "$("${SUBCMD_EXEC}" "${@}")"  ;;
+      *     ) command    "${SUBCMD_EXEC}" "${@}"    ;;
+    esac
+  else
+    echo "jubaenv: unknown subcommand"
+  fi
+}
+_EOF_

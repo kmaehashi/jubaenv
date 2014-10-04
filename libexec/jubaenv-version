@@ -1,0 +1,3 @@
+#!/bin/sh -ue
+
+echo "jubaenv-0.1"

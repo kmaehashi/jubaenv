@@ -1,0 +1,21 @@
+#!/bin/sh -ue
+
+TARGET_VERSION="${1:-}"
+INSTALL_PREFIX="${JUBAENV_ROOT}/versions/${TARGET_VERSION}"
+
+if [ "${TARGET_VERSION}" = "" ]; then
+  ls "${INSTALL_PREFIX}" > /dev/stderr
+elif [ "${TARGET_VERSION}" = "system" ]; then
+
+  cat << '_EOF_'
+echo "TODO: not implemented yet. Please logout for now :-P"
+_EOF_
+
+else
+
+  cat "${INSTALL_PREFIX}/share/jubatus/jubatus.profile"
+  cat << _EOF_
+export JUBAENV_VERSION="${TARGET_VERSION}"
+_EOF_
+
+fi

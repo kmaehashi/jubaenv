@@ -1,0 +1,41 @@
+#!/bin/sh -ue
+
+TARGET_VERSION="${1:-}"
+INSTALL_PREFIX="${JUBAENV_ROOT}/versions/${TARGET_VERSION}"
+
+if [ -z "${TARGET_VERSION}" ]; then
+  echo "version is not specified"
+  return
+fi
+
+cd "${JUBAENV_ROOT}"
+
+if ! mkdir installer_lock; then
+  echo "Failed to acquire installer lock. Maybe another installation is running?"
+  echo "If you're sure another installforce unlock by:"
+  echo "  rmdir ${PWD}/installer_lock"
+  return
+fi
+trap "rmdir '${PWD}/installer_lock'" EXIT
+
+if [ -e "${INSTALL_PREFIX}/share/jubatus/jubatus.profile" ]; then
+  echo "jubaenv: ${TARGET_VERSION} already installed"
+  return
+fi
+
+if [ -d "${JUBAENV_ROOT}/installer" ]; then
+  cd installer
+  git remote update
+else
+  git clone "https://github.com/jubatus/jubatus-installer.git" installer
+  cd installer
+fi
+
+if [ "${TARGET_VERSION}" = "-l" ]; then
+  git tag
+else
+  git tag -l -- "${TARGET_VERSION}"
+  git checkout "${TARGET_VERSION}"
+  ./install.sh -p "${INSTALL_PREFIX}"
+  echo "jubaenv: Installation Succeed!"
+fi

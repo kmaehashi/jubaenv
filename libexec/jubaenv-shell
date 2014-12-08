@@ -13,9 +13,15 @@ _EOF_
 
 else
 
-  cat "${INSTALL_PREFIX}/share/jubatus/jubatus.profile"
-  cat << _EOF_
+  if [ -f "${INSTALL_PREFIX}/share/jubatus/jubatus.profile" ]; then
+    cat "${INSTALL_PREFIX}/share/jubatus/jubatus.profile"
+    cat << _EOF_
 export JUBAENV_VERSION="${TARGET_VERSION}"
 _EOF_
+  else
+    cat << _EOF_
+echo "Version ${TARGET_VERSION} not installed, try: jubaenv install ${TARGET_VERSION}"
+_EOF_
+  fi
 
 fi

@@ -12,7 +12,7 @@ cd "${JUBAENV_ROOT}"
 
 if ! mkdir installer_lock; then
   echo "Failed to acquire installer lock. Maybe another installation is running?"
-  echo "If you're sure another installforce unlock by:"
+  echo "If you're sure no other installation is running, you can force unlock by:"
   echo "  rmdir ${PWD}/installer_lock"
   return
 fi
